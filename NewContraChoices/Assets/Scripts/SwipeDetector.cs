@@ -22,7 +22,7 @@ public class SwipeDetector : MonoBehaviour {
 	public float lastSwipeTime;
 	private bool moveAway;
 	private int shiftNum = 1;
-	private float shiftAmt = -14.5f;
+	private float shiftAmt = -13.5f;
 	private float shiftSize;
 	private Vector3 shiftInterval = new Vector3(-15,0,0);
 
@@ -85,7 +85,7 @@ public class SwipeDetector : MonoBehaviour {
 						// If the swipe direction is positive, it was an upward swipe.
 						// If the swipe direction is negative, it was a downward swipe.
 						if (swipeValue > 0) {
-							lastSwipe = SwipeDetector.SwipeDirection.Right;
+							lastSwipe = SwipeDetector.SwipeDirection.Left;
 							Debug.Log("This was an upward swipe");
 							moveAway = true;
 							//while (this.transform.position.x > -13.0f) {
@@ -94,7 +94,7 @@ public class SwipeDetector : MonoBehaviour {
 							//StartCoroutine ("movingSlideOut");
 							//}
 						} else if (swipeValue < 0) {
-							lastSwipe = SwipeDetector.SwipeDirection.Left;
+							lastSwipe = SwipeDetector.SwipeDirection.Right;
 							Debug.Log("This was a downward swipe");
 						}
 
