@@ -20,11 +20,14 @@ public class SwipeDetector : MonoBehaviour {
 
 	public SwipeDirection lastSwipe = SwipeDetector.SwipeDirection.None;
 	public float lastSwipeTime;
-	private bool moveAway;
-	private int shiftNum = 1;
-	private float shiftAmt = -13.5f;
+	private bool moveForwardBool;
+	private bool moveBackwardBool;
+	private int shiftNum = 0;
+	private float shiftAmtForward = -13.5f;
+	private float shiftAmtBackward = 13.5f;
 	private float shiftSize;
-	private Vector3 shiftInterval = new Vector3(-15,0,0);
+	private Vector3 shiftInterval = new Vector3(-13.5f,0f,0f);
+	private Vector3 backwardShiftInterval = new Vector3(13.5f,0f,0f);
 
 
 	void OnAwake(){
@@ -32,22 +35,44 @@ public class SwipeDetector : MonoBehaviour {
 	}
 
 
+	void moveForward(){
+
+		shiftSize = shiftAmtForward * shiftNum;
+		shiftInterval = new Vector3 (shiftNum * shiftAmtForward, 0, 0);
+		if (transform.position.x > shiftSize + 0.1f) {
+			//transform.Translate (-20 * Time.deltaTime, 0f, 0f);
+			print ("should be moving forward one");
+			transform.position = Vector3.Lerp (transform.position, shiftInterval, 10*Time.deltaTime);
+		} 
+		if (transform.position.x <= shiftSize + 0.1f) {
+			shiftNum++;
+			moveForwardBool = false;
+			Debug.Log (shiftSize);
+		}
+	}
+
+	void moveBackward(){
+		shiftSize = shiftAmtBackward * shiftNum;
+		backwardShiftInterval = new Vector3 (shiftNum * shiftAmtBackward, 0, 0);
+		if (transform.position.x < shiftSize - 0.1f) {
+			print ("should be moving backwards one");
+			transform.position = Vector3.Lerp (transform.position, backwardShiftInterval, 10*Time.deltaTime);
+		} 
+		if (transform.position.x >= shiftSize - 0.1f) {
+			moveBackwardBool = false;
+			Debug.Log (shiftSize);
+		}
+
+	}
+
 
 	void  Update(){
-		if (moveAway) {
-			shiftSize = shiftAmt * shiftNum;
-			if (transform.position.x > shiftSize + 0.1f) {
-				//transform.Translate (-20 * Time.deltaTime, 0f, 0f);
-				print ("should be moving");
-				//Vector3 stopperPosition = new Vector3 (-14, 0, 0);
-				transform.position = Vector3.Lerp (transform.position, shiftInterval, 10*Time.deltaTime);
-			} 
-			if (transform.position.x <= shiftSize + 0.1f) {
-				moveAway = false;
-				shiftNum++;
-				shiftInterval = new Vector3 (shiftNum * shiftAmt, 0, 0);
-				Debug.Log (shiftSize);
-			}
+		if (moveForwardBool) {
+			moveForward ();
+		}
+
+		if (moveBackwardBool) {
+			moveBackward ();
 		}
 
 
@@ -84,18 +109,19 @@ public class SwipeDetector : MonoBehaviour {
 
 						// If the swipe direction is positive, it was an upward swipe.
 						// If the swipe direction is negative, it was a downward swipe.
-						if (swipeValue > 0) {
+						if (swipeValue < 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Left;
-							Debug.Log("This was an upward swipe");
-							moveAway = true;
+							Debug.Log("This was a <---- swipe");
+							moveForwardBool = true;
 							//while (this.transform.position.x > -13.0f) {
 							//Vector2.Lerp (transform.position, new Vector2 (0.1f, this.transform.position.y), Time.time);
 							//transform.position = new Vector2(-0.1f, this.transform.position.y);
 							//StartCoroutine ("movingSlideOut");
 							//}
-						} else if (swipeValue < 0) {
+						} else if (swipeValue > 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Right;
-							Debug.Log("This was a downward swipe");
+							Debug.Log("This was a ----> swipe");
+							moveBackwardBool = true;
 						}
 
 						// Set the time the last swipe occured, useful for other scripts to check:
@@ -108,13 +134,15 @@ public class SwipeDetector : MonoBehaviour {
 		}
 	}
 
-	/*void OnMouseDown(){
+	void OnMouseUp(){
 		//StartCoroutine (Movement ());
-		moveAway = true;
+		moveBackwardBool = true;
+		//moveForwardBool = true;
+		shiftNum--;
 		print ("MouseWentDown");
 	}
 
-	IEnumerator Movement(){
+	/*IEnumerator Movement(){
 				Vector2 target = new Vector2 (-14.0f, 0f);
 				float speed = 0f;
 				//while (Vector2.Distance (transform.position, target) > 0.1f) {
