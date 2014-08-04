@@ -38,7 +38,7 @@ public class SwipeDetector : MonoBehaviour {
 	void moveForward(){
 
 		shiftSize = shiftAmtForward * shiftNum;
-		shiftInterval = new Vector3 (shiftNum * shiftAmtForward, 0, 0);
+		shiftInterval = new Vector3 (shiftSize, 0, 0);
 		if (transform.position.x > shiftSize + 0.1f) {
 			//transform.Translate (-20 * Time.deltaTime, 0f, 0f);
 			print ("should be moving forward one");
@@ -52,8 +52,9 @@ public class SwipeDetector : MonoBehaviour {
 	}
 
 	void moveBackward(){
+		shiftNum--;
 		shiftSize = shiftAmtBackward * shiftNum;
-		backwardShiftInterval = new Vector3 (shiftNum * shiftAmtBackward, 0, 0);
+		backwardShiftInterval = new Vector3 (shiftSize, 0, 0);
 		if (transform.position.x < shiftSize - 0.1f) {
 			print ("should be moving backwards one");
 			transform.position = Vector3.Lerp (transform.position, backwardShiftInterval, 10*Time.deltaTime);
@@ -136,9 +137,9 @@ public class SwipeDetector : MonoBehaviour {
 
 	void OnMouseUp(){
 		//StartCoroutine (Movement ());
-		moveBackwardBool = true;
-		//moveForwardBool = true;
-		shiftNum--;
+		//moveBackwardBool = true;
+		moveForwardBool = true;
+		//shiftNum--;
 		print ("MouseWentDown");
 	}
 
