@@ -3,7 +3,18 @@ using System.Collections;
 
 public class SwipeDetector : MonoBehaviour {
 
-	// Values to set:
+	//for DRAG
+	public float min_X;
+	public float max_X;
+	public string prefsString;
+	private float m_Volume = 0.0f;
+
+	float originalWidth = 1280.0f;  // define here the original resolution
+	float originalHeight = 800.0f; // you used to create the GUI contents 
+	Vector3 scale;
+	private bool handleFingerInput = false;
+
+	// Values to set for SWIPE:
 	public float comfortZone = 70.0f;
 	public float minSwipeDist = 14.0f;
 	public float maxSwipeTime = 0.5f;
@@ -40,6 +51,11 @@ public class SwipeDetector : MonoBehaviour {
 		spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 		spotNow = new Vector3 (spotNow.x, 0f, 0f);
 		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+
+		//For Drag
+		float xpos = min_X + ((max_X - min_X) * m_Volume);
+		gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
+
 	}
 
 
@@ -77,16 +93,75 @@ public class SwipeDetector : MonoBehaviour {
 
 
 	void  Update(){
+
+		//Drag stuff
+		/*if(gameObject.transform.position.x <= min_X)
+		{
+			gameObject.transform.position = new Vector3(min_X, gameObject.transform.position.y, gameObject.transform.position.z);
+		}
+		else if(gameObject.transform.position.x >= max_X)
+		{
+			gameObject.transform.position = new Vector3(max_X, gameObject.transform.position.y, gameObject.transform.position.z);
+		}*/
+
+		if(Input.touchCount > 0)
+		{
+			for(int i = 0; i < Input.touchCount; i++)
+			{
+				Vector2 inputPosition = Input.touches[i].position;
+
+				if (Input.touches[i].phase == TouchPhase.Began )
+				{
+
+					//if(guiTexture.HitTest(inputPosition) == true)
+					//{
+						handleFingerInput = true;
+					//}
+				}
+				else if((Input.touches[i].phase == TouchPhase.Moved || Input.touches[i].phase == TouchPhase.Stationary) && (handleFingerInput == true))
+				{
+					float xpos = gameObject.transform.position.x;
+					xpos = inputPosition.x /  Screen.width;
+					if(xpos <= spotPrev.x - 6.75f)
+					{
+						xpos = spotPrev.x;
+					}
+					else if(xpos >= spotNext.x + 6.75f)
+					{
+						xpos = spotNext.x;
+					}
+
+					gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
+
+					m_Volume = (xpos - min_X) / (max_X - min_X);
+
+					/*if(PlayerPrefs.GetFloat(prefsString) != m_Volume)
+					{
+						PlayerPrefs.SetFloat(prefsString, m_Volume);
+						PlayerPrefs.Save();
+					}*/
+				}
+				else
+				{
+					handleFingerInput = false;
+				}
+
+
+			}
+		}
+
+		//Swipe stuff
+
 		if (moveForwardBool) {
-			moveForward ();
+			//moveForward ();
 		}
 
 		if (moveBackwardBool) {
-			moveBackward ();
+			//moveBackward ();
 		}
 
 
-		if (Input.touchCount > 0) {
+		/*if (Input.touchCount > 0) {
 			Touch touch = Input.touches[0];
 
 			switch (touch.phase){
@@ -122,12 +197,12 @@ public class SwipeDetector : MonoBehaviour {
 						if (swipeValue < 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Left;
 							Debug.Log("This was a <---- swipe");
-							//moveForwardBool = true;
+							moveForwardBool = true;
 
 						} else if (swipeValue > 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Right;
 							Debug.Log("This was a ----> swipe");
-							//moveBackwardBool = true;
+							moveBackwardBool = true;
 						}
 
 						// Set the time the last swipe occured, useful for other scripts to check:
@@ -137,11 +212,11 @@ public class SwipeDetector : MonoBehaviour {
 				}
 				break;
 			}
-		}
+		}*/
 	}
 		
 
-	void OnMouseOver(){
+	/*void OnMouseOver(){
 		if (Input.GetMouseButtonDown (0)) {
 			moveForwardBool = true;
 			print ("Mouse Left Went Down");
@@ -152,6 +227,35 @@ public class SwipeDetector : MonoBehaviour {
 			moveBackwardBool = true;
 			print ("Mouse Right Went Down");
 
+		}
+	}*/
+
+	/***Use for TESTING PURPOSESS******//////
+	void OnMouseDown()
+	{
+		StartCoroutine("HandleMouseDown");
+	}
+
+
+	IEnumerator HandleMouseDown()
+	{
+		while(Input.GetMouseButtonUp(0) == false)
+		{
+			Vector3 inputPosition = Input.mousePosition;
+			float xpos = gameObject.transform.position.x;
+			xpos = inputPosition.x / Screen.width;
+			if(xpos <= spotPrev.x - 6.75f)
+			{
+				xpos = spotPrev.x;
+			}
+			else if(xpos >= spotNext.x + 6.75f)
+			{
+				xpos = spotNext.x;
+			}
+
+			gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
+			m_Volume = (xpos - min_X) / (max_X - min_X);
+			yield return null;
 		}
 	}
 }
