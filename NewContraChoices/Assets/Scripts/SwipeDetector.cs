@@ -22,48 +22,57 @@ public class SwipeDetector : MonoBehaviour {
 	public float lastSwipeTime;
 	private bool moveForwardBool;
 	private bool moveBackwardBool;
-	private int shiftNum = 0;
-	private float shiftAmtForward = -13.5f;
-	private float shiftAmtBackward = 13.5f;
-	private float shiftSize;
-	private Vector3 shiftInterval = new Vector3(-13.5f,0f,0f);
-	private Vector3 backwardShiftInterval = new Vector3(13.5f,0f,0f);
+	/////////private int shiftNum = 0;
+	//private float shiftAmtForward = -13.5f;
+	//private float shiftAmtBackward = 13.5f;
+	private float shiftInterval = 13.5f;
+	//private Vector3 shiftInterval = new Vector3(-13.5f,0f,0f);
+	//private Vector3 backwardShiftInterval = new Vector3(13.5f,0f,0f);
+
+	private Vector3 spotNow;
+	private Vector3 spotNext;
+	private Vector3 spotPrev;
+
+	//private float currentX = 0;
 
 
 	void OnAwake(){
-	
+		spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
+		spotNow = new Vector3 (spotNow.x, 0f, 0f);
+		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 	}
 
 
 	void moveForward(){
 
-		shiftSize = shiftAmtForward * shiftNum;
-		shiftInterval = new Vector3 (shiftSize, 0, 0);
-		if (transform.position.x > shiftSize + 0.1f) {
-			//transform.Translate (-20 * Time.deltaTime, 0f, 0f);
+		if (transform.position.x > spotNext.x + 0.1f) {
 			print ("should be moving forward one");
-			transform.position = Vector3.Lerp (transform.position, shiftInterval, 10*Time.deltaTime);
+			transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
+
 		} 
-		if (transform.position.x <= shiftSize + 0.1f) {
-			shiftNum++;
+		if (transform.position.x <= spotNext.x + 0.1f) {
+			transform.position = spotNext;
+			spotNow = spotNext; 
+			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 			moveForwardBool = false;
-			Debug.Log (shiftSize);
+			Debug.Log (transform.position);
 		}
 	}
 
 	void moveBackward(){
-		shiftNum--;
-		shiftSize = shiftAmtBackward * shiftNum;
-		backwardShiftInterval = new Vector3 (shiftSize, 0, 0);
-		if (transform.position.x < shiftSize - 0.1f) {
+		if (transform.position.x < spotPrev.x - 0.1f) {
 			print ("should be moving backwards one");
-			transform.position = Vector3.Lerp (transform.position, backwardShiftInterval, 10*Time.deltaTime);
+			transform.position = Vector3.Lerp (transform.position, spotPrev, 10*Time.deltaTime);
 		} 
-		if (transform.position.x >= shiftSize - 0.1f) {
+		if (transform.position.x >= spotPrev.x -0.1f) {
+			transform.position = spotPrev;
+			spotNow = spotPrev;
+			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 			moveBackwardBool = false;
-			Debug.Log (shiftSize);
+			Debug.Log (transform.position);
 		}
-
 	}
 
 
@@ -106,23 +115,19 @@ public class SwipeDetector : MonoBehaviour {
 					if ((swipeTime < maxSwipeTime) && (swipeDist > minSwipeDist)){
 						// It's a swiiiiiiiiiiiipe!
 						float swipeValue = Mathf.Sign(touch.position.x - startPos.x);
-						Vector2 offStageSpot = new Vector2 (-14f, 0);
+						//Vector2 offStageSpot = new Vector2 (-14f, 0);
 
 						// If the swipe direction is positive, it was an upward swipe.
 						// If the swipe direction is negative, it was a downward swipe.
 						if (swipeValue < 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Left;
 							Debug.Log("This was a <---- swipe");
-							moveForwardBool = true;
-							//while (this.transform.position.x > -13.0f) {
-							//Vector2.Lerp (transform.position, new Vector2 (0.1f, this.transform.position.y), Time.time);
-							//transform.position = new Vector2(-0.1f, this.transform.position.y);
-							//StartCoroutine ("movingSlideOut");
-							//}
+							//moveForwardBool = true;
+
 						} else if (swipeValue > 0) {
 							lastSwipe = SwipeDetector.SwipeDirection.Right;
 							Debug.Log("This was a ----> swipe");
-							moveBackwardBool = true;
+							//moveBackwardBool = true;
 						}
 
 						// Set the time the last swipe occured, useful for other scripts to check:
@@ -134,24 +139,21 @@ public class SwipeDetector : MonoBehaviour {
 			}
 		}
 	}
+		
 
-	void OnMouseUp(){
-		//StartCoroutine (Movement ());
-		//moveBackwardBool = true;
-		moveForwardBool = true;
-		//shiftNum--;
-		print ("MouseWentDown");
+	void OnMouseOver(){
+		if (Input.GetMouseButtonDown (0)) {
+			moveForwardBool = true;
+			print ("Mouse Left Went Down");
+
+		}
+
+		else if (Input.GetMouseButtonDown(1)){
+			moveBackwardBool = true;
+			print ("Mouse Right Went Down");
+
+		}
 	}
-
-	/*IEnumerator Movement(){
-				Vector2 target = new Vector2 (-14.0f, 0f);
-				float speed = 0f;
-				//while (Vector2.Distance (transform.position, target) > 0.1f) {
-				//float step = speed * Time.deltaTime;
-						//transform.position = Vector2.MoveTowards(transform.position, target, Time.time/1000);
-						transform.Translate (Time.deltaTime, 0f, 0f);
-				//}
-				yield return new WaitForSeconds(0.0f);
-
-		}*/
 }
+
+
