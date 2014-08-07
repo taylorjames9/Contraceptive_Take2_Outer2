@@ -44,6 +44,10 @@ public class SwipeDetector : MonoBehaviour {
 	private Vector3 spotNext;
 	private Vector3 spotPrev;
 
+	public int slideNum = 1; 
+
+	float originalSpotDownX = 0;
+
 	public bool fingerTouchedDown = false; 
 
 	//private float currentX = 0;
@@ -67,7 +71,7 @@ public class SwipeDetector : MonoBehaviour {
 	void moveForward(){
 
 		if (transform.position.x > spotNext.x + 0.1f) {
-			print ("Move Forward function says should be moving forward one");
+			//print ("Move Forward function says should be moving forward one");
 			transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
 
 		} 
@@ -78,12 +82,13 @@ public class SwipeDetector : MonoBehaviour {
 			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 			moveForwardBool = false;
 			Debug.Log (transform.position);
+			slideNum++;
 		}
 	}
 
 	void moveBackward(){
 		if (transform.position.x < spotPrev.x - 0.1f) {
-			print ("Move Backwards functionsays we should move backwards one");
+			//print ("Move Backwards functionsays we should move backwards one");
 			transform.position = Vector3.Lerp (transform.position, spotPrev, 10*Time.deltaTime);
 		} 
 		if (transform.position.x >= spotPrev.x -0.1f) {
@@ -93,6 +98,7 @@ public class SwipeDetector : MonoBehaviour {
 			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 			moveBackwardBool = false;
 			Debug.Log (transform.position);
+			slideNum--;
 		}
 	}
 
@@ -245,54 +251,52 @@ public class SwipeDetector : MonoBehaviour {
 	/***Use for TESTING PURPOSESS******//////
 	void OnMouseDown()
 	{
+		print("MouseOver is true");
 		StartCoroutine("HandleMouseDown");
 	}
 
 
 	IEnumerator HandleMouseDown()
 	{
-
 		float xpos = gameObject.transform.position.x;
-		float originalSpotDownX = 0;
 
-		while(Input.GetMouseButtonUp(0) == false)
+
+		while(Input.GetMouseButtonUp(0)==false)
 		{
+			print("MouseDown is true");
 			//On finger down
-			///bool fingerTouchedDown = true;
 			Vector3 inputPosition = Input.mousePosition;
-			float inputXNormalized = ((inputPosition.x) / (Screen.width / 3.0f));
-			xpos = spotNow.x;
+			float inputXNormalized = ((inputPosition.x) / (Screen.width));
+			//print ("INputXNormal = " + inputXNormalized);
+			//xpos = spotNow.x;
+			xpos = inputXNormalized + spotNow.x;
 
 			if (!fingerTouchedDown) {
-
 				originalSpotDownX = inputXNormalized;
 				print ("Record Original FingerTouchDown Position " + originalSpotDownX);
 				fingerTouchedDown = true;
 			}
 
-			print ("xPos =" + xpos);
-
 			//On finger drag MOVE
 			if (xpos != originalSpotDownX) {
-				print("We are spotNow moving!");
-				//spotNow.x = inputXNormalized;
-				//xpos = spotNow.x;
-				xpos = inputXNormalized;
+				xpos = inputXNormalized + spotNow.x;
 				gameObject.transform.position = new Vector3 (xpos, 0f, 0f);
 			}
-			//m_Volume = (xpos - min_X) / (max_X - min_X);
 			yield return null;
 
 		}
 		//On Release 
+		print ("Original Spot Position "+originalSpotDownX);
+		print ("xpos " + xpos);
+		print ("SpotNow.x - Original Spot Position "+(spotNow.x + originalSpotDownX));
 		fingerTouchedDown = false;
-		if(xpos <= originalSpotDownX - 1.0f)
+		if(xpos <= spotNow.x +  originalSpotDownX)
 		{
 			print ("Should go to next spot");
 			moveForwardBool = true;
 		}
 
-		else if(xpos >= originalSpotDownX + 1.0f)
+		else if(xpos >= spotNow.x + originalSpotDownX)
 		{
 			print ("Should go to prev spot");
 			moveBackwardBool = true;
