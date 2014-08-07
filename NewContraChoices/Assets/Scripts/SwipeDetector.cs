@@ -9,8 +9,8 @@ public class SwipeDetector : MonoBehaviour {
 	public string prefsString;
 	private float m_Volume = 0.0f;
 
-	float originalWidth = 1280.0f;  // define here the original resolution
-	float originalHeight = 800.0f; // you used to create the GUI contents 
+	//float originalWidth = 1280.0f;  // define here the original resolution
+	//float originalHeight = 800.0f; // you used to create the GUI contents 
 	Vector3 scale;
 	private bool handleFingerInput = false;
 
@@ -44,6 +44,8 @@ public class SwipeDetector : MonoBehaviour {
 	private Vector3 spotNext;
 	private Vector3 spotPrev;
 
+	public bool fingerTouchedDown = false; 
+
 	//private float currentX = 0;
 
 
@@ -52,9 +54,12 @@ public class SwipeDetector : MonoBehaviour {
 		spotNow = new Vector3 (0.0f, 0f, 0f);
 		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 
+
+
 		//For Drag
 		float xpos = min_X + ((max_X - min_X) * m_Volume);
 		gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
+
 
 	}
 
@@ -248,31 +253,48 @@ public class SwipeDetector : MonoBehaviour {
 	{
 
 		float xpos = gameObject.transform.position.x;
+		float originalSpotDownX = 0;
 
-		//On hold down
 		while(Input.GetMouseButtonUp(0) == false)
 		{
+			//On finger down
+			///bool fingerTouchedDown = true;
 			Vector3 inputPosition = Input.mousePosition;
-			print("InputPosition.x = "+inputPosition.x);
+			float inputXNormalized = ((inputPosition.x) / (Screen.width / 3.0f));
+			xpos = spotNow.x;
 
-			xpos = (spotNow.x - inputPosition.x) / (Screen.width/3.0f);
-			gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
+			if (!fingerTouchedDown) {
+
+				originalSpotDownX = inputXNormalized;
+				print ("Record Original FingerTouchDown Position " + originalSpotDownX);
+				fingerTouchedDown = true;
+			}
+
+			print ("xPos =" + xpos);
+
+			//On finger drag MOVE
+			if (xpos != originalSpotDownX) {
+				print("We are spotNow moving!");
+				//spotNow.x = inputXNormalized;
+				//xpos = spotNow.x;
+				xpos = inputXNormalized;
+				gameObject.transform.position = new Vector3 (xpos, 0f, 0f);
+			}
 			//m_Volume = (xpos - min_X) / (max_X - min_X);
 			yield return null;
 
 		}
 		//On Release 
-		if(xpos <= spotNow.x - 1.0f)
+		fingerTouchedDown = false;
+		if(xpos <= originalSpotDownX - 1.0f)
 		{
 			print ("Should go to next spot");
-			//xpos = spotPrev.x;
 			moveForwardBool = true;
 		}
 
-		else if(xpos >= spotNow.x + 1.0f)
+		else if(xpos >= originalSpotDownX + 1.0f)
 		{
 			print ("Should go to prev spot");
-			//xpos = spotNext.x;
 			moveBackwardBool = true;
 		}
 	}
