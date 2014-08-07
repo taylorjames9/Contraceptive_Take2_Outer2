@@ -4,8 +4,8 @@ using System.Collections;
 public class SwipeDetector : MonoBehaviour {
 
 	//for DRAG
-	public float min_X;
-	public float max_X;
+	public float min_X = -1.0f;
+	public float max_X = 1.0f;
 	public string prefsString;
 	private float m_Volume = 0.0f;
 
@@ -14,7 +14,7 @@ public class SwipeDetector : MonoBehaviour {
 	Vector3 scale;
 	private bool handleFingerInput = false;
 
-	// Values to set for SWIPE:
+	// for SWIPE:
 	public float comfortZone = 70.0f;
 	public float minSwipeDist = 14.0f;
 	public float maxSwipeTime = 0.5f;
@@ -49,7 +49,7 @@ public class SwipeDetector : MonoBehaviour {
 
 	void OnAwake(){
 		spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
-		spotNow = new Vector3 (spotNow.x, 0f, 0f);
+		spotNow = new Vector3 (0.0f, 0f, 0f);
 		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 
 		//For Drag
@@ -62,7 +62,7 @@ public class SwipeDetector : MonoBehaviour {
 	void moveForward(){
 
 		if (transform.position.x > spotNext.x + 0.1f) {
-			print ("should be moving forward one");
+			print ("Move Forward function says should be moving forward one");
 			transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
 
 		} 
@@ -78,7 +78,7 @@ public class SwipeDetector : MonoBehaviour {
 
 	void moveBackward(){
 		if (transform.position.x < spotPrev.x - 0.1f) {
-			print ("should be moving backwards one");
+			print ("Move Backwards functionsays we should move backwards one");
 			transform.position = Vector3.Lerp (transform.position, spotPrev, 10*Time.deltaTime);
 		} 
 		if (transform.position.x >= spotPrev.x -0.1f) {
@@ -94,6 +94,7 @@ public class SwipeDetector : MonoBehaviour {
 
 	void  Update(){
 
+
 		//Drag stuff
 		/*if(gameObject.transform.position.x <= min_X)
 		{
@@ -106,27 +107,33 @@ public class SwipeDetector : MonoBehaviour {
 
 		if(Input.touchCount > 0)
 		{
+			print("Inside Update and touchcount>0");
 			for(int i = 0; i < Input.touchCount; i++)
 			{
 				Vector2 inputPosition = Input.touches[i].position;
+				float xpos = transform.position.x;
+				xpos = inputPosition.x;
+				//print ("xpos = "+xpos);
 
 				if (Input.touches[i].phase == TouchPhase.Began )
 				{
 
 					//if(guiTexture.HitTest(inputPosition) == true)
 					//{
-						handleFingerInput = true;
+					handleFingerInput = true;
+					print ("TouchPhase = BEGAN");
 					//}
 				}
 				else if((Input.touches[i].phase == TouchPhase.Moved || Input.touches[i].phase == TouchPhase.Stationary) && (handleFingerInput == true))
 				{
-					float xpos = gameObject.transform.position.x;
-					xpos = inputPosition.x /  Screen.width;
-					if(xpos <= spotPrev.x - 6.75f)
+
+
+
+					if(xpos <= spotPrev.x - 1.0f)
 					{
 						xpos = spotPrev.x;
 					}
-					else if(xpos >= spotNext.x + 6.75f)
+					else if(xpos >= spotNext.x + 1.0f)
 					{
 						xpos = spotNext.x;
 					}
@@ -153,14 +160,14 @@ public class SwipeDetector : MonoBehaviour {
 		//Swipe stuff
 
 		if (moveForwardBool) {
-			//moveForward ();
+			moveForward ();
 		}
 
 		if (moveBackwardBool) {
-			//moveBackward ();
+			moveBackward ();
 		}
 
-
+		//this is all the swipe to move code
 		/*if (Input.touchCount > 0) {
 			Touch touch = Input.touches[0];
 
@@ -239,23 +246,34 @@ public class SwipeDetector : MonoBehaviour {
 
 	IEnumerator HandleMouseDown()
 	{
+
+		float xpos = gameObject.transform.position.x;
+
+		//On hold down
 		while(Input.GetMouseButtonUp(0) == false)
 		{
 			Vector3 inputPosition = Input.mousePosition;
-			float xpos = gameObject.transform.position.x;
-			xpos = inputPosition.x / Screen.width;
-			if(xpos <= spotPrev.x - 6.75f)
-			{
-				xpos = spotPrev.x;
-			}
-			else if(xpos >= spotNext.x + 6.75f)
-			{
-				xpos = spotNext.x;
-			}
+			print("InputPosition.x = "+inputPosition.x);
 
+			xpos = (spotNow.x - inputPosition.x) / (Screen.width/3.0f);
 			gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
-			m_Volume = (xpos - min_X) / (max_X - min_X);
+			//m_Volume = (xpos - min_X) / (max_X - min_X);
 			yield return null;
+
+		}
+		//On Release 
+		if(xpos <= spotNow.x - 1.0f)
+		{
+			print ("Should go to next spot");
+			//xpos = spotPrev.x;
+			moveForwardBool = true;
+		}
+
+		else if(xpos >= spotNow.x + 1.0f)
+		{
+			print ("Should go to prev spot");
+			//xpos = spotNext.x;
+			moveBackwardBool = true;
 		}
 	}
 }
