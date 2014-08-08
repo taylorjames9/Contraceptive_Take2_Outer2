@@ -33,18 +33,15 @@ public class SwipeDetector : MonoBehaviour {
 	public float lastSwipeTime;
 	private bool moveForwardBool;
 	private bool moveBackwardBool;
-	/////////private int shiftNum = 0;
-	//private float shiftAmtForward = -13.5f;
-	//private float shiftAmtBackward = 13.5f;
+
 	private float shiftInterval = 13.5f;
-	//private Vector3 shiftInterval = new Vector3(-13.5f,0f,0f);
-	//private Vector3 backwardShiftInterval = new Vector3(13.5f,0f,0f);
 
 	private Vector3 spotNow;
 	private Vector3 spotNext;
 	private Vector3 spotPrev;
 
 	public int slideNum = 1; 
+ 	public int totalNumSlides = 5; 
 
 	float originalSpotDownX = 0;
 
@@ -66,42 +63,54 @@ public class SwipeDetector : MonoBehaviour {
 
 
 	void moveForward(){
+		//if(slideNum <totalNumSlides){
+			
+			if(slideNum >= totalNumSlides){
+				spotNext = spotNow;
+			}
 
-		if (transform.position.x > spotNext.x + 0.1f) {
-			//print ("Move Forward function says should be moving forward one");
-			transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
 
-		} 
-		if (transform.position.x <= spotNext.x + 0.1f) {
-			transform.position = spotNext;
-			spotNow = spotNext; 
-			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
-			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
-			moveForwardBool = false;
-			Debug.Log (transform.position);
-			slideNum++;
-		}
+			if (transform.position.x > spotNext.x + 0.1f) {
+				transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
+
+			} 
+			if (transform.position.x <= spotNext.x + 0.1f) {
+				transform.position = spotNext;
+				spotNow = spotNext; 
+				spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+				spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
+				moveForwardBool = false;
+				if (slideNum < totalNumSlides) {
+					slideNum++;
+				}
+			}
+		//}
 	}
 
 	void moveBackward(){
-		if (transform.position.x < spotPrev.x - 0.1f) {
-			//print ("Move Backwards functionsays we should move backwards one");
-			transform.position = Vector3.Lerp (transform.position, spotPrev, 10*Time.deltaTime);
-		} 
-		if (transform.position.x >= spotPrev.x -0.1f) {
-			transform.position = spotPrev;
-			spotNow = spotPrev;
-			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
-			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
-			moveBackwardBool = false;
-			Debug.Log (transform.position);
-			slideNum--;
-		}
+			if (slideNum <= 1) {
+					spotPrev = spotNow;
+			}
+			if (transform.position.x < spotPrev.x - 0.1f) {
+					//print ("Move Backwards functionsays we should move backwards one");
+					transform.position = Vector3.Lerp (transform.position, spotPrev, 10 * Time.deltaTime);
+			} 
+			if (transform.position.x >= spotPrev.x - 0.1f) {
+					transform.position = spotPrev;
+					spotNow = spotPrev;
+					spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+					spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
+					moveBackwardBool = false;
+					if (slideNum > 1) {	
+						slideNum--;
+					}
+			}
+		//}
 	}
 
 
 	void  Update(){
-
+		print ("SlideNUm = " +slideNum);
 
 		//Drag stuff
 		/*if(gameObject.transform.position.x <= min_X)
@@ -115,7 +124,7 @@ public class SwipeDetector : MonoBehaviour {
 
 		if(Input.touchCount > 0)
 		{
-			print("Inside Update and touchcount>0");
+			//print("Inside Update and touchcount>0");
 			for(int i = 0; i < Input.touchCount; i++)
 			{
 				Vector2 inputPosition = Input.touches[i].position;
@@ -248,7 +257,7 @@ public class SwipeDetector : MonoBehaviour {
 	/***Use for TESTING PURPOSESS******//////
 	void OnMouseDown()
 	{
-		print("MouseOver is true");
+		//print("MouseOver is true");
 		StartCoroutine("HandleMouseDown");
 	}
 
@@ -260,7 +269,7 @@ public class SwipeDetector : MonoBehaviour {
 
 		while(Input.GetMouseButtonUp(0)==false)
 		{
-			print("MouseDown is true");
+			//print("MouseDown is true");
 			//On finger down
 			Vector3 inputPosition = Input.mousePosition;
 			float inputXNormalized = ((inputPosition.x) / (Screen.width));
@@ -284,9 +293,9 @@ public class SwipeDetector : MonoBehaviour {
 		}
 
 		//On Release 
-		print ("Original Spot Position "+originalSpotDownX);
-		print ("xpos " + xpos);
-		print ("SpotNow.x - Original Spot Position "+(spotNow.x + originalSpotDownX));
+		//print ("Original Spot Position "+originalSpotDownX);
+		//print ("xpos " + xpos);
+		//print ("SpotNow.x - Original Spot Position "+(spotNow.x + originalSpotDownX));
 		fingerTouchedDown = false;
 		if(xpos <= spotNow.x +  originalSpotDownX)
 		{

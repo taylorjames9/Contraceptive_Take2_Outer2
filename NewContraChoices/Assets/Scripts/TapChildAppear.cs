@@ -14,7 +14,7 @@ public class TapChildAppear : MonoBehaviour {
 	void OnMouseDown(){
 		myCompatriot.SetActive (true);
 		myCompatriot.transform.position = myCompatriot.transform.parent.transform.parent.position;
-		//turn box colleder off on SlideSwipeHolder
+		//turn box collider off on SlideSwipeHolder
 		GameObject masterCollider = GameObject.FindWithTag ("MasterCollider");
 	    masterCollider.collider2D.enabled = false;
 	}
