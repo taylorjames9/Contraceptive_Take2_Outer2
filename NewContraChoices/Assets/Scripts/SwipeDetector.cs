@@ -58,12 +58,9 @@ public class SwipeDetector : MonoBehaviour {
 		spotNow = new Vector3 (0.0f, 0f, 0f);
 		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 
-
-
 		//For Drag
 		float xpos = min_X + ((max_X - min_X) * m_Volume);
 		gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
-
 
 	}
 
@@ -285,6 +282,7 @@ public class SwipeDetector : MonoBehaviour {
 			yield return null;
 
 		}
+
 		//On Release 
 		print ("Original Spot Position "+originalSpotDownX);
 		print ("xpos " + xpos);
