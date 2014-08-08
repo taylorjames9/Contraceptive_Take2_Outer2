@@ -9,10 +9,17 @@ public class PushSlideDown : MonoBehaviour {
 
 	void Start(){
 
-		myAuxVex3 = new Vector3 (myAuxSlide.transform.position.x, myAuxSlide.transform.position.y, myAuxSlide.transform.position.z);
-		myHidingSpot = new Vector3 (myAuxSlide.transform.position.x, -11.0f, myAuxSlide.transform.position.x);
+
 	}
 	
+	void Update(){
+	
+				myAuxVex3 = new Vector3 (myAuxSlide.transform.position.x, myAuxSlide.transform.position.y, myAuxSlide.transform.position.z);
+				myHidingSpot = new Vector3 (myAuxSlide.transform.position.x, (myAuxSlide.transform.position.y - 11.0f), myAuxSlide.transform.position.z);
+
+	}
+
+
 	void OnMouseDown()
 	{
 		Debug.Log ("BLACK BUTTON");
@@ -21,7 +28,9 @@ public class PushSlideDown : MonoBehaviour {
 	}
 
 	IEnumerator move(){
-			myAuxSlide.transform.position = Vector3.Lerp (myAuxVex3, myHidingSpot, 10*Time.deltaTime);
+			//myAuxSlide.transform.position = Vector3.Lerp (myAuxVex3, myHidingSpot, 10*Time.deltaTime);
+			myAuxSlide.transform.position = myHidingSpot;
+
 			GameObject masterCollider = GameObject.FindWithTag ("MasterCollider");
 			masterCollider.collider2D.enabled = true;
 			yield return null;
