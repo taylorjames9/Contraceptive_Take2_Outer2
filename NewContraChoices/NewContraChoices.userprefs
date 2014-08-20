@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SwipeDetector.cs">
     <Files>
-      <File FileName="Assets/Scripts/SwipeDetector.cs" Line="85" Column="3" />
+      <File FileName="Assets/Scripts/SwipeDetector.cs" Line="75" Column="7" />
       <File FileName="Assets/Scripts/TapChildAppear.cs" Line="17" Column="19" />
       <File FileName="Assets/Scripts/PushSlideDown.cs" Line="33" Column="4" />
     </Files>

@@ -65,10 +65,9 @@ public class SwipeDetector : MonoBehaviour {
 	void moveForward(){
 		//if(slideNum <totalNumSlides){
 			
-			if(slideNum >= totalNumSlides){
+			if(slideNum > totalNumSlides){
 				spotNext = spotNow;
 			}
-
 
 			if (transform.position.x > spotNext.x + 0.1f) {
 				transform.position = Vector3.Lerp (transform.position, spotNext, 10*Time.deltaTime);
@@ -80,11 +79,10 @@ public class SwipeDetector : MonoBehaviour {
 				spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 				spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 				moveForwardBool = false;
-				if (slideNum < totalNumSlides) {
+				if (slideNum <= totalNumSlides) {
 					slideNum++;
 				}
 			}
-		//}
 	}
 
 	void moveBackward(){
@@ -111,6 +109,7 @@ public class SwipeDetector : MonoBehaviour {
 
 	void  Update(){
 		print ("SlideNUm = " +slideNum);
+		//Debug.Log ("TotalNumofSlides " +totalNumSlides);
 
 		//Drag stuff
 		/*if(gameObject.transform.position.x <= min_X)
