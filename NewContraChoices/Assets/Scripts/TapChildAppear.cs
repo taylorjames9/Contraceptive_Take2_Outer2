@@ -23,9 +23,18 @@ public class TapChildAppear : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
+		
 		myCompatriot.SetActive (true);
 		myCompatriot.transform.position = myCompatriot.transform.parent.transform.parent.position;
 		GameObject masterCollider = GameObject.FindWithTag ("MasterCollider");
 	    masterCollider.collider2D.enabled = false;
+		Component[] blackBtns = this.transform.parent.transform.GetComponentsInChildren<BoxCollider2D> ();
+		//print ("this is the blackbtns ArrayList: " + blackBtns); 
+		foreach (BoxCollider2D blckbtns in blackBtns) {
+						if (blckbtns.name != "BlackBtn_Back") {
+								blckbtns.enabled = false;
+								print ("blackbtns " + blckbtns);
+						}
+		}
 	}
 }
