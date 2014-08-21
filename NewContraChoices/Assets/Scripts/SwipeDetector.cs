@@ -41,7 +41,7 @@ public class SwipeDetector : MonoBehaviour {
 	private Vector3 spotPrev;
 
 	public int slideNum = 1; 
- 	public int totalNumSlides = 5; 
+ 	public int totalNumSlides = 3; 
 
 	float originalSpotDownX = 0;
 
@@ -51,11 +51,13 @@ public class SwipeDetector : MonoBehaviour {
 
 	public float colliderZ = -1.0f;
 
+	public bool slideChange;
+
 
 	void OnAwake(){
-		spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
-		spotNow = new Vector3 (0.0f, 0f, colliderZ);
-		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
+		spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
+		spotNow = new Vector3 (0.0f, 0f, 0f);
+		spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
 
 		//For Drag
 		float xpos = min_X + ((max_X - min_X) * m_Volume);
@@ -66,9 +68,12 @@ public class SwipeDetector : MonoBehaviour {
 
 	void moveForward(){
 		//if(slideNum <totalNumSlides){
-			
-			if(slideNum > totalNumSlides){
+
+			 
+			if(slideNum >= totalNumSlides){
 				spotNext = spotNow;
+				slideNum = totalNumSlides;
+				//slideChange = false; 
 			}
 
 			if (transform.position.x > spotNext.x + 0.1f) {
@@ -78,10 +83,10 @@ public class SwipeDetector : MonoBehaviour {
 			if (transform.position.x <= spotNext.x + 0.1f) {
 				transform.position = spotNext;
 				spotNow = spotNext; 
-			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
-			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
+				spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+				spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 				moveForwardBool = false;
-				if (slideNum <= totalNumSlides) {
+				if (slideNum < totalNumSlides) {
 					slideNum++;
 				}
 			}
@@ -90,6 +95,7 @@ public class SwipeDetector : MonoBehaviour {
 	void moveBackward(){
 			if (slideNum <= 1) {
 					spotPrev = spotNow;
+					slideNum = 1;
 			}
 			if (transform.position.x < spotPrev.x - 0.1f) {
 					//print ("Move Backwards functionsays we should move backwards one");
@@ -98,8 +104,8 @@ public class SwipeDetector : MonoBehaviour {
 			if (transform.position.x >= spotPrev.x - 0.1f) {
 					transform.position = spotPrev;
 					spotNow = spotPrev;
-			spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
-			spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
+					spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
+					spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
 					moveBackwardBool = false;
 					if (slideNum > 1) {	
 						slideNum--;
