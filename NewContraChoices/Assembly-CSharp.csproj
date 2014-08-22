@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\LoadScene.cs" />
      <Compile Include="Assets\Scripts\PushSlideDown.cs" />
      <Compile Include="Assets\Scripts\SwipeDetector.cs" />
+     <Compile Include="Assets\Scripts\SwipeDetector_OptScene.cs" />
      <Compile Include="Assets\Scripts\TapChildAppear.cs" />
      <Compile Include="Assets\Scripts\tapOptionsScript.cs" />
   </ItemGroup>
