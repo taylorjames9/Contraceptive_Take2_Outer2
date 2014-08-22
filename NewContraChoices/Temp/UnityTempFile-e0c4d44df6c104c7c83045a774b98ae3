@@ -38,10 +38,12 @@
 -define:UNITY_EDITOR_OSX
 -define:UNITY_TEAM_LICENSE
 -define:UNITY_PRO_LICENSE
-'Assets/Scripts/GoTo7OptionsScene.cs'
+-define:7
 'Assets/Scripts/LoadScene.cs'
 'Assets/Scripts/PushSlideDown.cs'
 'Assets/Scripts/SwipeDetector.cs'
+'Assets/Scripts/SwipeDetector_OptScene.cs'
 'Assets/Scripts/TapChildAppear.cs'
+'Assets/Scripts/tapOptionsScript.cs'
 -r:'/Applications/Unity/Unity4.5.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity4.5.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'
