@@ -6,16 +6,7 @@ public class SwipeDetector_OptScene : MonoBehaviour {
 		//for DRAG
 		public float min_X = -1.0f;
 		public float max_X = 1.0f;
-		public string prefsString;
-		private float m_Volume = 0.0f;
 
-		public bool movedEnoughToGotFoward;
-		public bool movedEnoughToGotBackward;	
-		public bool moveForwardStarted;
-		public bool moveBackwardStarted;
-
-		//float originalWidth = 1280.0f;  // define here the original resolution
-		//float originalHeight = 800.0f; // you used to create the GUI contents 
 		Vector3 scale;
 		private bool handleFingerInput = false;
 
@@ -46,25 +37,19 @@ public class SwipeDetector_OptScene : MonoBehaviour {
 		private Vector3 spotPrev;
 
 		public int slideNum = 1; 
-		public int totalNumSlides = 3; 
+		public int totalNumSlides; 
 
 		float originalSpotDownX = 0;
 
+		bool moveForwardStarted = false;
+		bool moveBackwardStarted = false;
+
 		public bool fingerTouchedDown = false; 
-		public float colliderZ = -1.0f;
-
-		public bool slideChange;
-
 
 		void OnAwake(){
 				spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 				spotNow = new Vector3 (0.0f, 0f, 0f);
 				spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
-
-				//For Drag
-				float xpos = min_X + ((max_X - min_X) * m_Volume);
-				gameObject.transform.position = new Vector3(xpos, gameObject.transform.position.y, gameObject.transform.position.z);
-
 		}
 
 
@@ -130,8 +115,8 @@ public class SwipeDetector_OptScene : MonoBehaviour {
 						if (transform.position.x >= spotPrev.x - 0.1f) {
 								transform.position = spotPrev;
 								spotNow = spotPrev;
-								spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
-								spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
+								spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+								spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 								moveBackwardBool = false;
 
 						}
@@ -145,8 +130,8 @@ public class SwipeDetector_OptScene : MonoBehaviour {
 								transform.position = spotPrev;
 								print ("Move back completed");
 								spotNow = spotPrev;
-								spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
-								spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
+								spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+								spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 								moveBackwardBool = false;
 								if (slideNum > 1) {	
 										slideNum--;
@@ -157,8 +142,8 @@ public class SwipeDetector_OptScene : MonoBehaviour {
 										transform.position = spotPrev;
 										print ("Move back completed");
 										spotNow = spotPrev;
-										spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, colliderZ);
-										spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, colliderZ);
+										spotNext = new Vector3 (spotNow.x - shiftInterval, 0f, 0f);
+										spotPrev = new Vector3 (spotNow.x + shiftInterval, 0f, 0f);
 										moveBackwardBool = false;
 								}
 						}
