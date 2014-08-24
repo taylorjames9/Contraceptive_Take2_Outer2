@@ -34,11 +34,11 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 						//xPos = gameObject.transform.position.x;
 						for (int i = 0; i < Input.touchCount; i++) {
 
-								float xPos = gameObject.transform.position.x;
+								//float xPos = gameObject.transform.position.x;
 								Vector2 inputPosition = Input.touches[i].position;
 
 								if (Input.touches [i].phase == TouchPhase.Began) {
-										xPos = 0f;
+
 										handleFingerInput = true;
 										if (!fingerTouchedDown) {
 												originalSpotDownX = inputPosition.x / Screen.width;
@@ -49,20 +49,12 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 
 								} else if ((Input.touches [i].phase == TouchPhase.Moved || Input.touches [i].phase == TouchPhase.Stationary) && handleFingerInput) {
 										Vector2 touchDelta = Input.GetTouch (0).deltaPosition;
-										//xPos = ((slideNum * shiftAmt) + (originalSpotDownX - inputPosition.x));
-										//xPos = 0 + (originalSpotDownX + (inputPosition.x/Screen.width*2));
-										///////if (fingerDragMagnitude > 0) 
-										        //xPos = (slideNum * shiftAmt) + (originalSpotDownX + (inputPosition.x/Screen.width*2));
-												xPos = 0 + (originalSpotDownX + touchDelta);
-										//////else if (fingerDragMagnitude < 0)
-												//////xPos = (slideNum * shiftAmt) + (originalSpotDownX + touchDelta);
-
+										//float xPos = (slideNum * shiftAmt) + (originalSpotDownX + (inputPosition.x/Screen.width) -1.0f);
+										float xPos = (slideNum * shiftAmt) + (inputPosition.x/Screen.width - originalSpotDownX);
 
 										Debug.Log ("xPos " + xPos);
 										transform.position = new Vector2 (xPos, 0f);
 										fingerDragMagnitude = touchDelta.x;
-
-
 								} else if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended && handleFingerInput) {
 										handleFingerInput = false; 
 										Debug.Log ("fingerDragMagnitude = " + fingerDragMagnitude);
