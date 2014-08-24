@@ -3,9 +3,9 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SmoothPageSlide_2.cs">
     <Files>
       <File FileName="Assets/Scripts/tapOptionsScript.cs" Line="25" Column="53" />
-      <File FileName="Assets/Scripts/SwipeDetector_OptScene.cs" Line="180" Column="72" />
+      <File FileName="Assets/Scripts/SwipeDetector_OptScene.cs" Line="50" Column="1" />
       <File FileName="Assets/Scripts/SmoothPageSwipe.cs" Line="50" Column="7" />
-      <File FileName="Assets/Scripts/SmoothPageSlide_2.cs" Line="52" Column="100" />
+      <File FileName="Assets/Scripts/SmoothPageSlide_2.cs" Line="37" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
