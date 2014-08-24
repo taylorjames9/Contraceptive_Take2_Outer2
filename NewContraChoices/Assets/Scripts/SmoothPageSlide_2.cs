@@ -41,7 +41,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 										xPos = 0f;
 										handleFingerInput = true;
 										if (!fingerTouchedDown) {
-												originalSpotDownX = inputPosition.x;
+												originalSpotDownX = inputPosition.x / Screen.width;
 												print ("Record Original FingerTouchDown Position " + originalSpotDownX);
 												fingerTouchedDown = true;
 										}
@@ -49,8 +49,16 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 
 								} else if ((Input.touches [i].phase == TouchPhase.Moved || Input.touches [i].phase == TouchPhase.Stationary) && handleFingerInput) {
 										Vector2 touchDelta = Input.GetTouch (0).deltaPosition;
-										xPos = ((slideNum * shiftAmt) + originalSpotDownX + inputPosition.x);
+										//xPos = ((slideNum * shiftAmt) + (originalSpotDownX - inputPosition.x));
+										//xPos = 0 + (originalSpotDownX + (inputPosition.x/Screen.width*2));
+										///////if (fingerDragMagnitude > 0) 
+										        //xPos = (slideNum * shiftAmt) + (originalSpotDownX + (inputPosition.x/Screen.width*2));
+												xPos = 0 + (originalSpotDownX + touchDelta);
+										//////else if (fingerDragMagnitude < 0)
+												//////xPos = (slideNum * shiftAmt) + (originalSpotDownX + touchDelta);
 
+
+										Debug.Log ("xPos " + xPos);
 										transform.position = new Vector2 (xPos, 0f);
 										fingerDragMagnitude = touchDelta.x;
 
