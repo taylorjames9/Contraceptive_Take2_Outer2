@@ -22,7 +22,6 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		float originalSpotDownX = 0;
 
 		//For move forward and move back functions
-
 		private Vector2 spotNow;
 		private Vector2 spotNext;
 		private Vector2 spotPrev;
@@ -64,10 +63,10 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 										fingerTouchedDown = false;
 										handleFingerInput = false; 
 										Debug.Log ("fingerDragMagnitude = " + fingerDragMagnitude);
-										if (fingerDragMagnitude > 2f) {
+										if (fingerDragMagnitude < -2f) {
 												moveForwardBool = true;
 												Debug.Log ("Prompt to move forward");
-										} else if (fingerDragMagnitude < -2f) {
+										} else if (fingerDragMagnitude > 2f) {
 												moveBackwardBool = true;
 												Debug.Log ("Prompt to move back");
 										}
@@ -87,17 +86,60 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		}
 
 		void moveForward(){
-				print ("SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
+				print ("Move Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
 				//if w're not at the last slide, lerp to the next slide
 				if (slideNum < totalNumSlides) {
-						transform.position = Vector3.Lerp (transform.position, spotNext, 10 * Time.deltaTime);
+						if (transform.position.x > spotNext.x + 0.1f) {
+								Debug.Log ("Move Forward Started");
+								Vector3 vex3ConversionOfSpotNextForLerp = spotNext;
+								transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotNextForLerp, 10 * Time.deltaTime);
+								moveForwardStarted = true;
+						}
+						if (transform.position.x <= spotNext.x + 0.1f && moveForwardStarted) {
+								transform.position = spotNext;
+								print ("MOVE COMPLETED");
+								spotNow = spotNext; 
+								spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
+								spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
+								moveForwardBool = false;
+								slideNum++;
+								moveForwardStarted = false;
+						}
 				}
-		
 		}
 
 		void moveBack(){
+				print ("MoveBack Called .SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
+				if (slideNum > 1) {
+						if (transform.position.x < spotPrev.x - 0.1f) {
+								Vector3 vex3ConversionOfSpotPrevForLerp = spotPrev;
+								transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotPrevForLerp, 10 * Time.deltaTime);
+								moveBackwardStarted = true;
+								print ("move back started");
+						}
+						if (transform.position.x >= spotPrev.x - 0.1f && moveBackwardStarted) {
+								transform.position = spotPrev;
+								spotNow = spotPrev;
+								spotNext = new Vector3 (spotNow.x - shiftAmt, 0f);
+								spotPrev = new Vector3 (spotNow.x + shiftAmt, 0f);
+								moveBackwardBool = false;
+								slideNum--;
+								moveBackwardStarted = false;
+								print ("Move back completed");
+						}
+				} else {
+						backHitBuffer();
+				}
+		}
+
+
+		void backHitBuffer(){
+
 
 		}
+
+		void forwardHitBuffer()
+
 
 		void returnToCurrentSpot(){
 
