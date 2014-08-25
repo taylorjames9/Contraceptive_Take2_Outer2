@@ -33,7 +33,7 @@ public class tapOptionsScript : MonoBehaviour {
 				myOptionsAll.SetActive (false);
 				sliderTrack = GameObject.Find ("SlideSwipe_Holder");
 				SmoothPageSlide_2 pageSlideScript = sliderTrack.GetComponent<SmoothPageSlide_2>();
-				pageSlideScript.moveForwardBool = true;
-				Debug.Log ("PRINTING moveForwardBool from myOptions page " + pageSlideScript.moveForwardBool);
+				pageSlideScript.forceForwardBool = true;
+				Debug.Log ("PRINTING moveForwardBool from myOptions page " + pageSlideScript.forceForwardBool);
 		}
 }

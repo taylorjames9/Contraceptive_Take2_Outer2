@@ -89,10 +89,16 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				} else if (moveBackToCurrentSpot) {
 						returnToCurrentSpot ();
 				}
+				if (forceBackwardBool) {
+						forceForward ();
+				}
+			
+
+
 		}
 
 		public void moveForward(){
-				print ("Move Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
+				Debug.Log("Move Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
 				//if w're not at the last slide, lerp to the next slide
 				if (slideNum < totalNumSlides) {
 						if (transform.position.x > spotNext.x + 0.1f) {
@@ -104,7 +110,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 						}
 						if (transform.position.x <= spotNext.x + 0.1f && moveForwardStarted) {
 								transform.position = spotNext;
-								Debug.Log ("MOVE COMPLETED");
+								Debug.Log ("Force MOVE COMPLETED");
 								spotNow = spotNext; 
 								spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
 								spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
@@ -112,7 +118,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 								Debug.Log ("SlideNum after forward move = " + slideNum);
 								moveForwardStarted = false;
 								moveForwardBool = false;
-								Debug.Log ("Move forward completed");
+								Debug.Log ("force forward completed");
 						}
 				} else {
 						forwardHitBuffer ();
@@ -188,10 +194,19 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		}
 
 		void forceForward (){
-
+				Debug.Log ("Force Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
+				if (slideNum < totalNumSlides) {
+						transform.position = spotNext;
+						Debug.Log ("Force forwrd COMPLETED");
+						spotNow = spotNext; 
+						spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
+						spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
+						slideNum++;
+						Debug.Log ("SlideNum after forward move = " + slideNum);
+						//moveForwardStarted = false;
+						forceForwardBool = false;
+						Debug.Log ("force forward completed");
+				}
 		}
 
-		void forceBackward (){
-
-		}
 }
