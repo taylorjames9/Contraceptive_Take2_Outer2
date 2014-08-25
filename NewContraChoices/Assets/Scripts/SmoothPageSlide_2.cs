@@ -89,7 +89,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				} else if (moveBackToCurrentSpot) {
 						returnToCurrentSpot ();
 				}
-				if (forceBackwardBool) {
+				if (forceForwardBool) {
 						forceForward ();
 				}
 			
@@ -195,18 +195,17 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 
 		void forceForward (){
 				Debug.Log ("Force Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
-				if (slideNum < totalNumSlides) {
+				//if (slideNum < totalNumSlides) {
 						transform.position = spotNext;
 						Debug.Log ("Force forwrd COMPLETED");
 						spotNow = spotNext; 
 						spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
 						spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
 						slideNum++;
-						Debug.Log ("SlideNum after forward move = " + slideNum);
-						//moveForwardStarted = false;
+						Debug.Log ("SlideNum after force forward move = " + slideNum);
 						forceForwardBool = false;
 						Debug.Log ("force forward completed");
-				}
+				//}
 		}
 
 }

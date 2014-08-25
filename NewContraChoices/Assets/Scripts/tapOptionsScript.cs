@@ -6,9 +6,11 @@ public class tapOptionsScript : MonoBehaviour {
 
 		public GameObject myCompatriot;
 		public GameObject sliderTrack;
+		public GameObject myOption1;
 		public GameObject[] cardArray;
 		string compatriotName;
 		//public GameObject myOptionsAll;
+
 
 
 		void Start(){
@@ -23,14 +25,16 @@ public class tapOptionsScript : MonoBehaviour {
 				Debug.Log ("Hit Me");
 				myCompatriot.SetActive (true);
 				//float optionSlideXPos = myOptionSlide.transform.position.x;
-				myCompatriot.transform.position = new Vector2 (this.transform.position.x, 0f);
+				//GameObject myPlaceHolderObject = GameObject.Find ("MyOption1");
+				myCompatriot.transform.position = new Vector2 (myOption1.transform.position.x, myOption1.transform.position.y);
 				foreach (GameObject card in cardArray) {
 						if(!string.Equals(card.name, compatriotName)){
 								card.SetActive (false);
 						}
 				}
-				GameObject myOptionsAll = GameObject.Find ("MyOptions_All");
-				myOptionsAll.SetActive (false);
+				//GameObject myOptionsAll = GameObject.Find ("MyOptions_All");
+				//myOptionsAll.SetActive (false);
+
 				sliderTrack = GameObject.Find ("SlideSwipe_Holder");
 				SmoothPageSlide_2 pageSlideScript = sliderTrack.GetComponent<SmoothPageSlide_2>();
 				pageSlideScript.forceForwardBool = true;
