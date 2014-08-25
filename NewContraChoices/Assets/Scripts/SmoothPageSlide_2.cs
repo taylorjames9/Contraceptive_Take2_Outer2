@@ -29,6 +29,9 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		bool moveForwardStarted = false;
 		bool moveBackwardStarted = false;
 
+		bool snapToCurrentFor = false;
+		bool snapToCurrentBac = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -55,7 +58,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 										Vector2 touchDelta = Input.GetTouch (0).deltaPosition;
 										Debug.Log ("ORIGNAL POSITION " + originalSpotDownX);
 										Debug.Log ("Cureent INpUTPOSTION " + inputPosition.x);
-										float xPos = (slideNum * shiftAmt) + ((inputPosition.x - originalSpotDownX)/ (Screen.width/2));
+										float xPos = (slideNum * shiftAmt * (-1)) + ((inputPosition.x - originalSpotDownX)/ (Screen.width/2));
 										Debug.Log ("xPos " + xPos);
 										transform.position = new Vector2 (xPos, 0f);
 										fingerDragMagnitude = touchDelta.x;
@@ -63,16 +66,16 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 										fingerTouchedDown = false;
 										handleFingerInput = false; 
 										Debug.Log ("fingerDragMagnitude = " + fingerDragMagnitude);
-										if (fingerDragMagnitude < -2f) {
+										if (fingerDragMagnitude < -20f) {
 												moveForwardBool = true;
 												Debug.Log ("Prompt to move forward");
-										} else if (fingerDragMagnitude > 2f) {
+										} else if (fingerDragMagnitude > 20f) {
 												moveBackwardBool = true;
 												Debug.Log ("Prompt to move back");
-										}
-										else
+										} else {
 												moveBackToCurrentSpot = true;
 												Debug.Log ("Prompt to return to curr position");
+										}
 								}
 						}
 				}
@@ -94,23 +97,28 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 								Vector3 vex3ConversionOfSpotNextForLerp = spotNext;
 								transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotNextForLerp, 10 * Time.deltaTime);
 								moveForwardStarted = true;
+								Debug.Log ("Move forward started");
 						}
 						if (transform.position.x <= spotNext.x + 0.1f && moveForwardStarted) {
 								transform.position = spotNext;
-								print ("MOVE COMPLETED");
+								Debug.Log ("MOVE COMPLETED");
 								spotNow = spotNext; 
 								spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
 								spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
-								moveForwardBool = false;
 								slideNum++;
+								Debug.Log ("SlideNum after forward move = " + slideNum);
 								moveForwardStarted = false;
+								moveForwardBool = false;
+								Debug.Log ("Move forward completed");
 						}
+				} else {
+						forwardHitBuffer ();
 				}
 		}
 
 		void moveBack(){
 				print ("MoveBack Called .SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
-				if (slideNum > 1) {
+				if (slideNum > 0) {
 						if (transform.position.x < spotPrev.x - 0.1f) {
 								Vector3 vex3ConversionOfSpotPrevForLerp = spotPrev;
 								transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotPrevForLerp, 10 * Time.deltaTime);
@@ -124,6 +132,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 								spotPrev = new Vector3 (spotNow.x + shiftAmt, 0f);
 								moveBackwardBool = false;
 								slideNum--;
+								Debug.Log ("SlideNum after back move = " + slideNum);
 								moveBackwardStarted = false;
 								print ("Move back completed");
 						}
@@ -132,14 +141,42 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				}
 		}
 
-
-		void backHitBuffer(){
-
-
+		void forwardHitBuffer(){
+				/*spotNext = spotNow;
+				Debug.Log ("Forward HIT BUFFER");
+				if (transform.position.x > spotNext.x + 0.1f) {
+						Vector3 vex3ConversionOfSpotNextForLerpBuffer = spotNext;
+						transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotNextForLerpBuffer, 10 * Time.deltaTime);
+						snapToCurrentFor = true;
+				}
+				if (transform.position.x <= spotNext.x + 0.1f && snapToCurrentFor) {
+						transform.position = spotNext;
+						spotNow = spotNext; 
+						spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
+						spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
+						moveForwardBool = false;
+						snapToCurrentFor = false;
+				}*/
 		}
 
-		void forwardHitBuffer()
-
+		void backHitBuffer(){
+				/*Debug.Log ("Back HIT BUFFER");
+				spotPrev = spotNow;
+				slideNum = 1;
+				if (transform.position.x < spotPrev.x - 0.1f) {
+						Vector3 vex3ConversionOfSpotPrevForLerpBuffer = spotPrev;
+						transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotPrevForLerpBuffer, 10 * Time.deltaTime);
+						snapToCurrentBac = true;
+				} 
+				if (transform.position.x >= spotPrev.x - 0.1f && snapToCurrentBac) {
+						transform.position = spotPrev;
+						spotNow = spotPrev;
+						spotNext = new Vector3 (spotNow.x - shiftAmt, 0f);
+						spotPrev = new Vector3 (spotNow.x + shiftAmt, 0f);
+						moveBackwardBool = false;
+						snapToCurrentBac = false;
+				}*/
+		}
 
 		void returnToCurrentSpot(){
 
