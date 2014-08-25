@@ -5,9 +5,9 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 
 
 		private float xPos; 
-		private bool moveForwardBool;
-		private bool moveBackwardBool;
-		private bool moveBackToCurrentSpot;
+		public bool moveForwardBool;
+		public bool moveBackwardBool;
+		public bool moveBackToCurrentSpot;
 
 		private bool handleFingerInput = false;
 
@@ -31,6 +31,9 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 
 		bool snapToCurrentFor = false;
 		bool snapToCurrentBac = false;
+
+		public bool forceForwardBool = false;
+		public bool forceBackwardBool = false;
 
 
 	// Use this for initialization
@@ -88,7 +91,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				}
 		}
 
-		void moveForward(){
+		public void moveForward(){
 				print ("Move Forward Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
 				//if w're not at the last slide, lerp to the next slide
 				if (slideNum < totalNumSlides) {
@@ -116,7 +119,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				}
 		}
 
-		void moveBack(){
+		public void moveBack(){
 				print ("MoveBack Called .SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
 				if (slideNum > 0) {
 						if (transform.position.x < spotPrev.x - 0.1f) {
@@ -181,6 +184,14 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		}
 
 		void returnToCurrentSpot(){
+
+		}
+
+		void forceForward (){
+
+		}
+
+		void forceBackward (){
 
 		}
 }

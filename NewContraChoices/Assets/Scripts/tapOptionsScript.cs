@@ -5,26 +5,35 @@ public class tapOptionsScript : MonoBehaviour {
 
 
 		public GameObject myCompatriot;
-		Vector3 adjacentSpot = new Vector3(13.5f,0f,0f);
-		Vector3 spotBack = new Vector3(-13.5f,0f,0f);
+		public GameObject sliderTrack;
 		public GameObject[] cardArray;
 		string compatriotName;
+		//public GameObject myOptionsAll;
+
 
 		void Start(){
 			compatriotName = myCompatriot.name;
 				Debug.Log ("compatriot name " + myCompatriot.name);
+
+				//SmoothPageSlide_2 sliderTrack.GetComponent("SmoothPageSlide_2");
 		}
 
 
-		void OnMouseDown(){
+		void OnMouseUp(){
 				Debug.Log ("Hit Me");
 				myCompatriot.SetActive (true);
-				myCompatriot.transform.position = adjacentSpot;
-				this.transform.parent.transform.parent.transform.position = spotBack;
+				//float optionSlideXPos = myOptionSlide.transform.position.x;
+				myCompatriot.transform.position = new Vector2 (this.transform.position.x, 0f);
 				foreach (GameObject card in cardArray) {
 						if(!string.Equals(card.name, compatriotName)){
 								card.SetActive (false);
 						}
 				}
+				GameObject myOptionsAll = GameObject.Find ("MyOptions_All");
+				myOptionsAll.SetActive (false);
+				sliderTrack = GameObject.Find ("SlideSwipe_Holder");
+				SmoothPageSlide_2 pageSlideScript = sliderTrack.GetComponent<SmoothPageSlide_2>();
+				pageSlideScript.moveForwardBool = true;
+				Debug.Log ("PRINTING moveForwardBool from myOptions page " + pageSlideScript.moveForwardBool);
 		}
 }
