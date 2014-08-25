@@ -142,40 +142,42 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		}
 
 		void forwardHitBuffer(){
-				/*spotNext = spotNow;
+				spotNext = spotNow;
 				Debug.Log ("Forward HIT BUFFER");
 				if (transform.position.x > spotNext.x + 0.1f) {
 						Vector3 vex3ConversionOfSpotNextForLerpBuffer = spotNext;
 						transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotNextForLerpBuffer, 10 * Time.deltaTime);
-						snapToCurrentFor = true;
+						//snapToCurrentFor = true;
 				}
-				if (transform.position.x <= spotNext.x + 0.1f && snapToCurrentFor) {
+				if (transform.position.x <= spotNext.x + 0.1f /*&& snapToCurrentFor*/) {
 						transform.position = spotNext;
 						spotNow = spotNext; 
 						spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
 						spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
 						moveForwardBool = false;
-						snapToCurrentFor = false;
-				}*/
+						//snapToCurrentFor = false;
+				}
 		}
 
 		void backHitBuffer(){
-				/*Debug.Log ("Back HIT BUFFER");
+				Debug.Log ("Back HIT BUFFER");
 				spotPrev = spotNow;
-				slideNum = 1;
+				slideNum = 0;
 				if (transform.position.x < spotPrev.x - 0.1f) {
+						Debug.Log ("Inside first method of backHitBuffer");
 						Vector3 vex3ConversionOfSpotPrevForLerpBuffer = spotPrev;
 						transform.position = Vector3.Lerp (transform.position, vex3ConversionOfSpotPrevForLerpBuffer, 10 * Time.deltaTime);
-						snapToCurrentBac = true;
+						//snapToCurrentBac = true;
 				} 
-				if (transform.position.x >= spotPrev.x - 0.1f && snapToCurrentBac) {
+				if (transform.position.x >= spotPrev.x - 0.1f /*&& snapToCurrentBac*/) {
+						Debug.Log ("Inside second method of backHitBuffer");
 						transform.position = spotPrev;
 						spotNow = spotPrev;
 						spotNext = new Vector3 (spotNow.x - shiftAmt, 0f);
 						spotPrev = new Vector3 (spotNow.x + shiftAmt, 0f);
 						moveBackwardBool = false;
-						snapToCurrentBac = false;
-				}*/
+						//snapToCurrentBac = false;
+				}
 		}
 
 		void returnToCurrentSpot(){
