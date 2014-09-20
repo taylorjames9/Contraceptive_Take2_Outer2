@@ -3,9 +3,19 @@ using System.Collections;
 
 public class PlayMovie : MonoBehaviour {
 
-	void Start(){
 
+
+		int mouseCounter;
+
+		void OnMouseDown(){
 				MovieTexture movie = renderer.material.mainTexture as MovieTexture;
-				movie.Play ();
-	}
+				mouseCounter++;
+				if (mouseCounter % 2 == 1) {
+						movie.Play ();
+						audio.Play ();
+				} else if (mouseCounter % 2 == 0) {
+						movie.Stop ();
+						audio.Stop ();
+				}
+		}
 }
