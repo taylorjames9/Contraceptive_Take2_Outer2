@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/tapOptionsScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SmoothPageSwipe.cs">
     <Files>
-      <File FileName="Assets/Scripts/SwipeDetector_OptScene.cs" Line="8" Column="8" />
+      <File FileName="Assets/Scripts/SwipeDetector_OptScene.cs" Line="28" Column="28" />
       <File FileName="Assets/Scripts/SmoothPageSwipe.cs" Line="7" Column="7" />
-      <File FileName="Assets/Scripts/SmoothPageSlide_2.cs" Line="49" Column="49" />
-      <File FileName="Assets/Scripts/tapOptionsScript.cs" Line="99" Column="99" />
+      <File FileName="Assets/Scripts/SmoothPageSlide_2.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/tapOptionsScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayMovie.cs" Line="19" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
