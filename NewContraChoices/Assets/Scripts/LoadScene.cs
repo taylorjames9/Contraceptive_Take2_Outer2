@@ -4,6 +4,7 @@ using System.Collections;
 public class LoadScene : MonoBehaviour {
 
 	public string sceneName = "Arm_A";
+	public GameObject myCheck;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,8 @@ public class LoadScene : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
+
+		myCheck.renderer.enabled = true;
 		Application.LoadLevel (sceneName); 
 	}
 }

@@ -185,7 +185,6 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 						spotNext = new Vector3 (spotNow.x - shiftAmt, 0f);
 						spotPrev = new Vector3 (spotNow.x + shiftAmt, 0f);
 						moveBackwardBool = false;
-						//snapToCurrentBac = false;
 				}
 		}
 

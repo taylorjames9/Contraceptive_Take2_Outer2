@@ -15,7 +15,7 @@ public class tapOptionsScript : MonoBehaviour {
 
 		void Start(){
 			compatriotName = myCompatriot.name;
-				Debug.Log ("compatriot name " + myCompatriot.name);
+				//Debug.Log ("compatriot name " + myCompatriot.name);
 
 				//SmoothPageSlide_2 sliderTrack.GetComponent("SmoothPageSlide_2");
 		}
@@ -38,6 +38,7 @@ public class tapOptionsScript : MonoBehaviour {
 				sliderTrack = GameObject.Find ("SlideSwipe_Holder");
 				SmoothPageSlide_2 pageSlideScript = sliderTrack.GetComponent<SmoothPageSlide_2>();
 				pageSlideScript.forceForwardBool = true;
+				//sliderTrack.collider2D.enabled = false;
 				Debug.Log ("PRINTING moveForwardBool from myOptions page " + pageSlideScript.forceForwardBool);
 		}
 }
