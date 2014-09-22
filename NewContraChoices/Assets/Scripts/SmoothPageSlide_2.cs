@@ -33,7 +33,9 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 		bool snapToCurrentBac = false;
 
 		public bool forceForwardBool = false;
-		public bool forceBackwardBool = false;
+		public bool forceBackBool = false;
+
+		bool dontMove = false;
 
 
 	// Use this for initialization
@@ -46,7 +48,7 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-				if (Input.touchCount > 0) {
+				if (Input.touchCount > 0 && !dontMove) {
 						for (int i = 0; i < Input.touchCount; i++) {
 								Vector2 inputPosition = Input.touches[i].position;
 								if (Input.touches [i].phase == TouchPhase.Began) {
@@ -91,6 +93,9 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 				}
 				if (forceForwardBool) {
 						forceForward ();
+				}
+				if (forceBackBool) {
+						forceBack ();
 				}
 			
 
@@ -164,7 +169,6 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 						spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
 						spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
 						moveForwardBool = false;
-						//snapToCurrentFor = false;
 				}
 		}
 
@@ -204,7 +208,22 @@ public class SmoothPageSlide_2 : MonoBehaviour {
 						Debug.Log ("SlideNum after force forward move = " + slideNum);
 						forceForwardBool = false;
 						Debug.Log ("force forward completed");
+						dontMove = true;
 				//}
 		}
-
+		void forceBack (){
+				Debug.Log ("Force Back Called. SlideNum " + slideNum + " .totalNumSlide is" + totalNumSlides);
+				//if (slideNum < totalNumSlides) {
+				transform.position = spotPrev;
+				Debug.Log ("Force Back COMPLETED");
+				spotNow = spotPrev; 
+				spotNext = new Vector2 (spotNow.x - shiftAmt, 0f);
+				spotPrev = new Vector2 (spotNow.x + shiftAmt, 0f);
+				slideNum--;
+				Debug.Log ("SlideNum after force back move = " + slideNum);
+				forceBackBool = false;
+				Debug.Log ("force forward completed");
+				dontMove = false;
+				//}
+		}
 }

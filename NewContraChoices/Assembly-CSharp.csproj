@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ColliderKiller.cs" />
+     <Compile Include="Assets\Scripts\ForceBack.cs" />
      <Compile Include="Assets\Scripts\LoadScene.cs" />
      <Compile Include="Assets\Scripts\PlayMovie.cs" />
      <Compile Include="Assets\Scripts\PushSlideDown.cs" />

@@ -42,6 +42,8 @@
 -define:UNITY_TEAM_LICENSE
 -define:UNITY_PRO_LICENSE
 -define:7
+'Assets/Scripts/ColliderKiller.cs'
+'Assets/Scripts/ForceBack.cs'
 'Assets/Scripts/LoadScene.cs'
 'Assets/Scripts/PlayMovie.cs'
 'Assets/Scripts/PushSlideDown.cs'

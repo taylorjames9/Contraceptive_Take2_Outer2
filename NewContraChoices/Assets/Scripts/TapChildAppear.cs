@@ -6,6 +6,7 @@ public class TapChildAppear : MonoBehaviour {
 
 	public GameObject myCompatriot;
 	public GameObject swipeHolder;
+	public GameObject backToOptionsBtn;
 
 	// Use this for initialization
 	void Start () {
@@ -23,11 +24,11 @@ public class TapChildAppear : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
-		
+		backToOptionsBtn.SetActive (false);
 		myCompatriot.SetActive (true);
 		myCompatriot.transform.position = myCompatriot.transform.parent.transform.parent.position;
 		GameObject masterCollider = GameObject.FindWithTag ("MasterCollider");
-	    masterCollider.collider2D.enabled = false;
+	    //masterCollider.collider2D.enabled = false;
 		Component[] blackBtns = this.transform.parent.transform.GetComponentsInChildren<BoxCollider2D> ();
 		//print ("this is the blackbtns ArrayList: " + blackBtns); 
 		foreach (BoxCollider2D blckbtns in blackBtns) {
