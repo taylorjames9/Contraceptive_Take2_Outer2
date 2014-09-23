@@ -6,7 +6,7 @@ public class PushSlideDown : MonoBehaviour {
 	public GameObject myAuxSlide;
 	public Vector3 myHidingSpot;
 	public Vector3 myAuxVex3;
-	public GameObject condomBackToOptionsBtn;
+	public GameObject myBackToOptionsBtn;
 
 	void Awake(){
 			myHidingSpot = new Vector3 (myAuxSlide.transform.position.x, (myAuxSlide.transform.position.y - 11.0f), myAuxSlide.transform.position.z);
@@ -28,7 +28,7 @@ public class PushSlideDown : MonoBehaviour {
 	}
 
 	IEnumerator move(){
-			condomBackToOptionsBtn.SetActive (true);
+			myBackToOptionsBtn.SetActive (true);
 			myAuxSlide.transform.position = myHidingSpot;
 			myAuxSlide.SetActive (false);
 			GameObject masterCollider = GameObject.FindWithTag ("MasterCollider");
